@@ -2,7 +2,7 @@ import React from "react";
 import { Checkbox as AntdCheckbox } from "antd";
 import "./checkbox.scss";
 
-function Checkbox({ label, name, value, onChange }) {
+function Checkbox({ label, name, value, onChange, disabled }) {
   return (
     <div className="inputCheckbox">
       <AntdCheckbox
@@ -10,6 +10,7 @@ function Checkbox({ label, name, value, onChange }) {
         name={name}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       >
         {label}
       </AntdCheckbox>

@@ -1,7 +1,7 @@
 @import "../../assert/colors.scss";
 
 .inputCheckbox {
-    padding-bottom: 8px;
+    padding-bottom: 4px;
     min-width: 135px;
     .ant-checkbox-input~span {
         width: 18px;
@@ -10,7 +10,7 @@
     }
 
     .ant-checkbox~span {
-        font-size: 15px;
+        // font-size: 15px;
     }
 
     .ant-checkbox-checked .ant-checkbox-inner,

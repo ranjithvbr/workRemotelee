@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Card, Radio } from "antd";
-import Input from "../../Component/Input";
-import Checkbox from "../../Component/Checkbox";
-import RadioButton from "../../Component/RadioButton";
-import Button from "../../Component/Button";
-import Trix from "trix";
+import {
+  Input,
+  Checkbox,
+  RadioButton,
+  Button,
+  Select,
+} from "../../Component/field";
 import { ReactTrixRTEInput } from "react-trix-rte";
+import CreateForm from "../CreateForm";
+import { categoryOptions } from "../../assert/optionList";
 import "./jobpost.scss";
 
 function JobPostForm() {
@@ -26,7 +30,8 @@ function JobPostForm() {
           required
         />
         <div className="categoryRowContainer">
-          <Input label={"Category"} required />
+          <Select Options={categoryOptions} label={"Category"} required />
+          {/* <Input label={"Category"} required /> */}
           <div className="jobType">
             <div className="fieldLabel">
               Job Type <span className="requiredSymbol"> *</span>
@@ -51,7 +56,7 @@ function JobPostForm() {
             <RadioButton label={"Worldwide"} value={true} />
             <RadioButton label={"Other Location Requirements"} value={false} />
           </Radio.Group>
-          {!remoteLocation &&
+          {!remoteLocation && (
             <>
               <div className="otherLocation">
                 <Checkbox label={"America"} />
@@ -70,14 +75,11 @@ function JobPostForm() {
               </div>
               <Input placeholder={"Countries, regions, timezones"} />
             </>
-          }
+          )}
         </div>
         <Input label={"Salary"} />
         <div className="application">
-          <div className="fieldLabel">
-            How to apply<span className="requiredSymbol"> *</span>
-          </div>
-          <Input placeholder={"Link to Application page or Email address."} />
+          <Input label={"How to apply"} placeholder={"Link to Application page or Email address."} />
           <div className="or">
             <span>OR</span>
           </div>
@@ -105,6 +107,7 @@ function JobPostForm() {
           </div>
         </div>
       </Card>
+      <CreateForm />
     </div>
   );
 }

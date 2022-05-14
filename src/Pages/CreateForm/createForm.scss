@@ -1,0 +1,53 @@
+@import "../../assert/colors.scss";
+
+.createFormModal {
+    .ant-modal-content .ant-modal-body {
+        padding-top: 0;
+    }
+}
+
+.questionContainer {
+    .fields {
+        display: flex;
+        align-items: flex-end;
+        >div {
+            &:first-child {
+                width: 40%;
+                margin-right: 10px;
+            }
+
+            &:nth-child(2) {
+                width: 40%;
+                margin-right: 10px;
+            }
+        }
+        button {
+            width: 20%;
+            height: 38px;
+            margin-bottom: 10px;
+            position: relative;
+            bottom: 2px;
+        }
+    }
+
+    .textAreaFixedHeight {
+        textarea {
+            height: 100px;
+        }
+    }
+    .customForm {
+        margin-top: 20px;
+        h3 {
+            color: $primaryText;
+            text-align: center;
+        }
+        textarea {
+            height: 100px;
+        }
+    }
+    .fieldOption {
+        textarea {
+            height: 70px;
+        }
+    }
+}
