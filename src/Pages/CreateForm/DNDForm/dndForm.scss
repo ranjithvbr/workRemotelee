@@ -1,0 +1,16 @@
+@import "../../../assert/colors.scss";
+
+
+.radioContainer {
+    margin: 10px 0;
+    display: grid;
+    position: relative;
+    label {
+        font-weight: 600;
+        padding-top: 4px;
+    }
+}
+
+.requiredSymbol {
+    color: $red;
+}

@@ -7,7 +7,7 @@ import {
   RadioButton,
   Button,
   Select,
-} from "../../Component/field";
+} from "../../Component/Fields";
 import { ReactTrixRTEInput } from "react-trix-rte";
 import CreateForm from "../CreateForm";
 import { categoryOptions } from "../../assert/optionList";

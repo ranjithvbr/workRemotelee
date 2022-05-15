@@ -1,5 +1,5 @@
 import React from "react";
-import "./input.scss";
+import "./field.scss";
 
 function Input({
   label,
@@ -9,7 +9,7 @@ function Input({
   onChange,
   placeholder,
   required,
-  disabled
+  disabled,
 }) {
   return (
     <div className="inputContainer">

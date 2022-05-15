@@ -1,6 +1,14 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { Button, Input, RadioButton, Select, TextArea } from "../../../Component/field";
+import {
+  Button,
+  Input,
+  RadioButton,
+  Select,
+  TextArea,
+} from "../../../Component/Fields";
+import { Radio } from "antd";
+import "./dndForm.scss";
 
 const style = {
   backgroundColor: "white",
@@ -8,6 +16,7 @@ const style = {
 };
 
 export const Card = ({ id, data, index, moveCard }) => {
+  const [selectedOptionValue, setSelectedOptionValue] = useState("");
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
     accept: "card",
@@ -68,23 +77,63 @@ export const Card = ({ id, data, index, moveCard }) => {
   drag(drop(ref));
 
   const handleQuestion = (data) => {
-      switch (data?.field) {
-          case "Input Box":
-              return <Input label={data.question} disabled required={data.required === "Yes"} />;
-          case "Select (Dropdown)":
-              return <Input label={data.question} disabled required={data.required === "Yes"} />;
-          case "Text Area Box":
-              return <TextArea label={data.question} disabled required={data.required === "Yes"} />;
-          case "Radio Button":
-              return <Input label={data.question} disabled required={data.required === "Yes"} />;
-          default:
-              break;
-      }
-  }
+    switch (data?.field) {
+      case "Input Box":
+        return (
+          <Input
+            label={data.question}
+            disabled
+            required={data.required === "Yes"}
+          />
+        );
+      case "Dropdown Box":
+        return (
+          <Select
+            label={data.question}
+            Options={data.options}
+            required={data.required === "Yes"}
+          />
+        );
+      case "Text Area Box":
+        return (
+          <TextArea
+            label={data.question}
+            disabled
+            required={data.required === "Yes"}
+          />
+        );
+      case "Radio Button":
+        return (
+          <div className="radioContainer">
+            {data.question && (
+              <label>
+                {data.question}{" "}
+                {data.required === "Yes" && (
+                  <span className="requiredSymbol">*</span>
+                )}
+              </label>
+            )}
+            <Radio.Group value={selectedOptionValue}>
+              {data.options.map((option) => {
+                return (
+                  <RadioButton
+                    onChange={() => setSelectedOptionValue(option?.li)}
+                    value={option?.li}
+                    label={option.li}
+                  />
+                );
+              })}
+            </Radio.Group>
+          </div>
+        );
+      default:
+        break;
+    }
+  };
 
   return (
     <div ref={ref} style={{ ...style, opacity }} data-handler-id={handlerId}>
-        {handleQuestion(data)}
+      {handleQuestion(data)}
     </div>
   );
 };

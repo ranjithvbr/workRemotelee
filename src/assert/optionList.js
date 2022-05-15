@@ -5,7 +5,7 @@ const fieldOptionList = [
     },
     {
       id: "2",
-      li: "Select (Dropdown)",
+      li: "Dropdown Box",
     },
     {
       id: "3",

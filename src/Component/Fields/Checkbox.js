@@ -1,6 +1,6 @@
 import React from "react";
 import { Checkbox as AntdCheckbox } from "antd";
-import "./checkbox.scss";
+import "./field.scss";
 
 function Checkbox({ label, name, value, onChange, disabled }) {
   return (
@@ -8,7 +8,7 @@ function Checkbox({ label, name, value, onChange, disabled }) {
       <AntdCheckbox
         type="checkbox"
         name={name}
-        value={value}
+        checked={value}
         onChange={onChange}
         disabled={disabled}
       >

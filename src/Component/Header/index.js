@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "../field";
+import { Button } from "../Fields";
 import "./header.scss";
 
 export default function Headers() {
