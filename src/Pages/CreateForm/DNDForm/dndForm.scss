@@ -14,3 +14,46 @@
 .requiredSymbol {
     color: $red;
 }
+
+.fieldRowContainer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    > div:first-child {
+        width: 85%;
+        margin-right: 10px;
+    }
+    span.anticon {
+        font-size: 18px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 30px;
+        margin-left: 2px;
+        &:hover {
+            background-color: $greyBackground;
+        }
+    }
+    .iconEdit {
+        color: $primaryText;
+    }
+    .iconDelete {
+        color: $errorMsg;
+    }
+    .dragDropIcon {
+        cursor: pointer;
+        padding: 10px 8px;
+        border-radius: 30px;
+        margin: 2px 2px 8px 0;
+        &:hover {
+            background-color: $greyBackground;
+        }
+        span {
+            border: 1.5px solid $primaryText;
+            display: block;
+            width: 17px;
+            border-radius: 10px;
+            margin-bottom: 2px;
+        }
+    }
+}

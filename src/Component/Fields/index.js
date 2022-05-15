@@ -4,5 +4,7 @@ import Input from "./Input";
 import RadioButton from "./RadioButton";
 import Select from "./Select";
 import TextArea from "./TextArea";
+import FileUpload from "./FileUpload";
+import DatePicker from "./DatePicker";
 
-export { Button, Checkbox, Input, RadioButton, Select, TextArea };
+export { Button, Checkbox, Input, RadioButton, Select, TextArea, FileUpload, DatePicker };

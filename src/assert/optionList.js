@@ -1,19 +1,27 @@
 const fieldOptionList = [
     {
       id: "1",
-      li: "Input Box",
+      li: "Input",
     },
     {
       id: "2",
-      li: "Dropdown Box",
+      li: "Dropdown",
     },
     {
       id: "3",
-      li: "Text Area Box",
+      li: "Text Area",
     },
     {
       id: "4",
       li: "Radio Button",
+    },
+    {
+      id: "6",
+      li: "Date Picker",
+    },
+    {
+      id: "7",
+      li: "File Upload",
     },
   ];
   

@@ -1,17 +1,19 @@
 import { useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import {
-  Button,
+  // Button,
   Input,
   RadioButton,
   Select,
   TextArea,
+  FileUpload,
+  DatePicker,
 } from "../../../Component/Fields";
 import { Radio } from "antd";
 import "./dndForm.scss";
 
 const style = {
-  backgroundColor: "white",
+  backgroundColor: "transparent",
   cursor: "move",
 };
 
@@ -78,7 +80,7 @@ export const Card = ({ id, data, index, moveCard }) => {
 
   const handleQuestion = (data) => {
     switch (data?.field) {
-      case "Input Box":
+      case "Input":
         return (
           <Input
             label={data.question}
@@ -86,7 +88,7 @@ export const Card = ({ id, data, index, moveCard }) => {
             required={data.required === "Yes"}
           />
         );
-      case "Dropdown Box":
+      case "Dropdown":
         return (
           <Select
             label={data.question}
@@ -94,7 +96,7 @@ export const Card = ({ id, data, index, moveCard }) => {
             required={data.required === "Yes"}
           />
         );
-      case "Text Area Box":
+      case "Text Area":
         return (
           <TextArea
             label={data.question}
@@ -126,6 +128,35 @@ export const Card = ({ id, data, index, moveCard }) => {
             </Radio.Group>
           </div>
         );
+      case "Date Picker":
+        return (
+          <div className="radioContainer">
+            {data.question && (
+              <label>
+                {data.question}{" "}
+                {data.required === "Yes" && (
+                  <span className="requiredSymbol">*</span>
+                )}
+              </label>
+            )}
+            <DatePicker />
+          </div>
+        );
+      case "File Upload":
+        return (
+          <div className="radioContainer">
+            {data.question && (
+              <label>
+                {data.question}{" "}
+                {data.required === "Yes" && (
+                  <span className="requiredSymbol">*</span>
+                )}
+              </label>
+            )}
+            <FileUpload />
+          </div>
+        );
+
       default:
         break;
     }

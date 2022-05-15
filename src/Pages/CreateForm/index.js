@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Radio } from "antd";
 import { TextArea, Select, Button, RadioButton } from "../../Component/Fields";
-import "./createForm.scss";
 import { fieldOptionList, RequiredOptionList } from "../../assert/optionList";
 import DNDForm from "./DNDForm/Container";
+import "./createForm.scss";
 
 function CreateForm() {
   const [visible, setVisible] = useState(true);
@@ -31,10 +31,10 @@ function CreateForm() {
   }, [fieldOptions, fieldValue.field]);
 
   const handleAdd = useCallback(() => {
-    if(!fieldValue.question) {
+    if (!fieldValue.question) {
       setYourQuestionError(true);
       return;
-    };
+    }
     setElement([
       ...element,
       {
@@ -48,17 +48,17 @@ function CreateForm() {
     setFieldValue({
       id: "",
       question: "",
-      field: "Input Box",
+      field: "Input",
       required: "Yes",
       options: [],
     });
-    setFieldOptions("")
+    setFieldOptions("");
   }, [OptionList, element, fieldValue]);
 
   const handleBlur = useCallback(() => {
-    if(fieldValue.question) {
+    if (fieldValue.question) {
       setYourQuestionError(false);
-    };
+    }
   }, [fieldValue.question]);
 
   const handleFieldValue = useCallback((data, name) => {
@@ -106,7 +106,7 @@ function CreateForm() {
           </div>
           <div className="optionContainer">
             {(fieldValue.field === "Radio Button" ||
-              fieldValue.field === "Dropdown Box") && (
+              fieldValue.field === "Dropdown") && (
               <div>
                 <TextArea
                   customTextAreaStyles="fieldOption"
@@ -114,7 +114,7 @@ function CreateForm() {
                   label={`${
                     fieldValue.field === "Radio Button"
                       ? "Radio"
-                      : fieldValue.field === "Dropdown Box"
+                      : fieldValue.field === "Dropdown"
                       ? "Dropdown"
                       : ""
                   } Options`}
@@ -132,16 +132,20 @@ function CreateForm() {
                       );
                     })}
                 </Radio.Group>
-                {fieldValue.field === "Dropdown Box" && (
+                {fieldValue.field === "Dropdown" && (
                   <Select Options={OptionList} />
                 )}
               </div>
             )}
           </div>
-          {element.length > 0 && <div className="customForm">
-            <div className="previewSubtitle">Preview - which will seen by applicant</div>
-            <DNDForm questions={element} />
-          </div>}
+          {element.length > 0 && (
+            <div className="customForm">
+              <div className="previewSubtitle">
+                Preview - which will seen by applicant
+              </div>
+              <DNDForm questions={element} />
+            </div>
+          )}
         </div>
       </Modal>
     </div>

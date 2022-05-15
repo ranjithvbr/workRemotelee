@@ -216,3 +216,51 @@
         }
     }
 }
+
+// Upload
+.dropzoneContainer {
+    border: 2px dashed #d7d7d7;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+
+    p {
+        margin: 0;
+    }
+}
+
+// DatePicker
+
+.datePickerContainer {
+    margin: 10px 0;
+    display: grid;
+    position: relative;
+
+    label {
+        font-weight: 600;
+        padding: 10px 0 4px 0;
+    }
+
+    .ant-picker {
+        height: 40px;
+        border: 2px solid #d7d7d7;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        padding: 0 10px;
+
+        &:focus-visible {
+            outline-color: $primaryText;
+        }
+    }
+
+    .requiredSymbol {
+        color: $red;
+    }
+
+    .errMsg {
+        position: absolute;
+    }
+}

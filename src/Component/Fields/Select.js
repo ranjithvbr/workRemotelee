@@ -13,6 +13,7 @@ function Select({
 }) {
   useEffect(() => {
     onChange && onChange(Options?.[0]?.li);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [Options]);
 
   const handleChange = (e) => {

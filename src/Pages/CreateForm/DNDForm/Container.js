@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Card } from "./Card.js";
+import { EditFilled, DeleteFilled } from '@ant-design/icons';
 
 export default function Container({ questions }) {
   const [cards, setCards] = useState(questions);
@@ -25,13 +26,22 @@ export default function Container({ questions }) {
   const renderCard = useCallback(
     (item, index) => {
       return (
-        <Card
-          key={item.id}
-          index={index}
-          id={item.id}
-          data={item}
-          moveCard={moveCard}
-        />
+        <div className="fieldRowContainer">
+          <Card
+            key={item.id}
+            index={index}
+            id={item.id}
+            data={item}
+            moveCard={moveCard}
+          />
+          <EditFilled className="iconEdit" />
+          <DeleteFilled className="iconDelete" />
+          <div className="dragDropIcon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
       );
     },
     [moveCard]
