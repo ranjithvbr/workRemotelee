@@ -1,7 +1,7 @@
 import { DatePicker as AntdDatePicker } from "antd";
 import "./field.scss";
 
-export default function DatePicker({ label, required, errMsg }) {
+export default function DatePicker({ label, required, errMsg, disabled }) {
   function onChange(date, dateString) {
     console.log(date, dateString);
   }
@@ -12,7 +12,7 @@ export default function DatePicker({ label, required, errMsg }) {
           {label} {required && <span className="requiredSymbol">*</span>}
         </label>
       )}
-      <AntdDatePicker onChange={onChange} />
+      <AntdDatePicker disabled={disabled} onChange={onChange} />
       <span className="errMsg">{errMsg}</span>
     </div>
   );

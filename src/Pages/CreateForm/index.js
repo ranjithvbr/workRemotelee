@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Radio } from "antd";
 import { TextArea, Select, Button, RadioButton } from "../../Component/Fields";
 import { fieldOptionList, RequiredOptionList } from "../../assert/optionList";
-import DNDForm from "./DNDForm/Container";
 import "./createForm.scss";
+import DND from "./DNDForm";
 
 function CreateForm() {
   const [visible, setVisible] = useState(true);
@@ -38,7 +38,7 @@ function CreateForm() {
     setElement([
       ...element,
       {
-        id: element.length,
+        id: `item-${element.length}`,
         question: fieldValue.question,
         field: fieldValue.field,
         required: fieldValue.required,
@@ -138,12 +138,13 @@ function CreateForm() {
               </div>
             )}
           </div>
+
           {element.length > 0 && (
             <div className="customForm">
               <div className="previewSubtitle">
                 Preview - which will seen by applicant
               </div>
-              <DNDForm questions={element} />
+              <DND questions={element}/>
             </div>
           )}
         </div>

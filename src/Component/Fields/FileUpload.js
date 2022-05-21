@@ -1,10 +1,10 @@
 import React from "react";
 import { useDropzone } from "react-dropzone";
 
-export default function FileUpload(props) {
+export default function FileUpload({ disabled }) {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
-    disabled: true
+    disabled: disabled
   });
 
   const files = acceptedFiles.map((file) => (
