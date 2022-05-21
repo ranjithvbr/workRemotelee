@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
   // Button,
@@ -13,13 +13,6 @@ import { Radio } from "antd";
 import { EditFilled, DeleteFilled, HolderOutlined } from "@ant-design/icons";
 import "./dndForm.scss";
 
-// fake data generator
-const getItems = (count) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }));
-
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -29,13 +22,12 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging, draggableStyle, selectedEditColor) => ({
   // some basic styles to make the items look a bit nicer
-  userSelect: "none",
   padding: "8px",
 
   // change background colour if dragging
-  background: "white",
+  background: selectedEditColor ? "#d7d7d7" : "white",
   borderRadius: "4px",
   boxShadow: isDragging
     ? "0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%)"
@@ -49,16 +41,24 @@ const getListStyle = (isDraggingOver) => ({
   padding: "10px",
 });
 
-export default function DND({ questions = [] }) {
+export default function DND({ questions = [], handleEdit, handleDelete, initialState, handleDnd }) {
   const [selectedOptionValue, setSelectedOptionValue] = useState("");
+  const [editIndex, setEditIndex] = useState("");
   const [items, setItems] = useState(questions);
+  const [disableIcon, setDisableIcon] = useState(false);
 
   useEffect(() => {
     setItems(questions);
   }, [questions]);
 
+  useEffect(() => {
+    if(initialState) {
+      setEditIndex("");
+      setDisableIcon(false);
+    }
+  }, [initialState])
+
   const onDragEnd = (result) => {
-    console.log("result", result);
     // dropped outside the list
     if (!result.destination) {
       return;
@@ -69,8 +69,8 @@ export default function DND({ questions = [] }) {
       result.source.index,
       result.destination.index
     );
-
     setItems(reorderedItems);
+    handleDnd(reorderedItems);
   };
 
   const handleQuestion = (data) => {
@@ -157,9 +157,14 @@ export default function DND({ questions = [] }) {
     }
   };
 
+  const handleEditFunc = useCallback((index) => {
+    handleEdit(index);
+    setEditIndex(index);
+    setDisableIcon(true);
+  }, [handleEdit])
+
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
-  console.log("items", items);
   return (
     <DragDropContext onDragEnd={onDragEnd} className="dndContainer">
       <Droppable droppableId="droppable">
@@ -172,22 +177,24 @@ export default function DND({ questions = [] }) {
               <Draggable key={item.id} draggableId={item.id} index={index}>
                 {(draggableProvided, draggableSnapshot) => (
                   <div
-                    ref={draggableProvided.innerRef}
+                    ref={disableIcon ? null : draggableProvided.innerRef}
                     {...draggableProvided.draggableProps}
                     style={getItemStyle(
                       draggableSnapshot.isDragging,
-                      draggableProvided.draggableProps.style
+                      draggableProvided.draggableProps.style,
+                      editIndex === item.id
                     )}
                   >
                     <div id={index}>
                       <div className="fieldRowContainer">
                         <div className="actinIconContainer">
                           {handleQuestion(item)}
-                          <EditFilled className="iconEdit" />
-                          <DeleteFilled className="iconDelete" />
+                          <EditFilled className={`${disableIcon ? "disableIcon" : "" } iconEdit`} onClick={disableIcon ? () => {} : ()=>handleEditFunc(item.id)} />
+                          <DeleteFilled className={`${disableIcon ? "disableIcon" : "" } iconDelete`} onClick={disableIcon ? () => {} : ()=>handleDelete(item.id)} />
                         </div>
                         <div className="dragDropIcon">
                           <HolderOutlined
+                            className={disableIcon ? "disableIcon" : "" }
                             {...draggableProvided.dragHandleProps}
                           />
                         </div>

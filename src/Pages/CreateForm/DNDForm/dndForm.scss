@@ -33,10 +33,16 @@
     }
 
     .dragDropIcon {
-        cursor: move;
-
         .anticon {
             cursor: move;
+        }
+    }
+
+    span.anticon.disableIcon,
+    .dragDropIcon.anticon.disableIcon {
+        cursor: not-allowed;
+        &:hover {
+            background-color: transparent;
         }
     }
 
@@ -44,6 +50,8 @@
         color: $primaryText;
         cursor: move;
     }
+
+    
 
     span.anticon,
     .dragDropIcon.anticon {

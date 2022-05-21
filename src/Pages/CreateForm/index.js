@@ -12,6 +12,9 @@ function CreateForm() {
   const [OptionList, setOptionList] = useState([]);
   const [selectedRadioOptionValue, setSelectedRadioOptionValue] = useState("");
   const [yourQuestionError, setYourQuestionError] = useState(false);
+  const [optionErr, setOptionErr] = useState(false);
+  const [editIndex, setEditIndex] = useState("");
+  const [initialState, setInitialState] = useState(true);
   const [fieldValue, setFieldValue] = useState({
     id: "",
     question: "",
@@ -30,21 +33,7 @@ function CreateForm() {
     setOptionList(list);
   }, [fieldOptions, fieldValue.field]);
 
-  const handleAdd = useCallback(() => {
-    if (!fieldValue.question) {
-      setYourQuestionError(true);
-      return;
-    }
-    setElement([
-      ...element,
-      {
-        id: `item-${element.length}`,
-        question: fieldValue.question,
-        field: fieldValue.field,
-        required: fieldValue.required,
-        options: OptionList,
-      },
-    ]);
+  const handleCancel = useCallback(() => {
     setFieldValue({
       id: "",
       question: "",
@@ -53,13 +42,58 @@ function CreateForm() {
       options: [],
     });
     setFieldOptions("");
-  }, [OptionList, element, fieldValue]);
+    setEditIndex("");
+    setInitialState(true);
+  }, []);
+
+  const handleAdd = useCallback(() => {
+    if (!fieldValue.question) {
+      setYourQuestionError(true);
+      return;
+    }
+    if (
+      (fieldValue.field === "Radio Button" &&
+        !selectedRadioOptionValue.length > 0) ||
+      (fieldValue.field === "Dropdown" && !OptionList.length > 0)
+    ) {
+      setOptionErr(true);
+      return;
+    }
+    let count = 0;
+    element?.filter((it) => {
+      if (element.length + 1 <= Number(it.id.replace("item-", ""))) {
+        count = Number(it.id.replace("item-", "")) + 1;
+      } else {
+        count = element.length;
+      }
+      return null;
+    });
+    setElement([
+      ...element,
+      {
+        id: `item-${count}`,
+        question: fieldValue.question,
+        field: fieldValue.field,
+        required: fieldValue.required,
+        options: OptionList,
+      },
+    ]);
+    handleCancel();
+  }, [OptionList, element, fieldValue, handleCancel, selectedRadioOptionValue]);
 
   const handleBlur = useCallback(() => {
     if (fieldValue.question) {
       setYourQuestionError(false);
     }
-  }, [fieldValue.question]);
+    if (
+      (fieldValue.field === "Radio Button" &&
+        selectedRadioOptionValue.length > 0) ||
+      (fieldValue.field === "Dropdown" && OptionList.length > 0)
+    ) {
+      setOptionErr(false);
+      return;
+    }
+  }, [OptionList, fieldValue, selectedRadioOptionValue]);
 
   const handleFieldValue = useCallback((data, name) => {
     setFieldValue((prevState) => ({
@@ -68,7 +102,57 @@ function CreateForm() {
     }));
   }, []);
 
-  console.log("OptionList", fieldValue);
+  const handleEdit = useCallback(
+    (editId) => {
+      let filteredEle = element.filter((item) => editId === item.id);
+      let { id, question, field, required, options } = filteredEle?.[0];
+      setFieldValue({
+        id,
+        question,
+        field,
+        required,
+        options,
+      });
+      let editOptions = options.map((li) => li?.li?.trim()).join(", ");
+      setFieldOptions(editOptions);
+      setEditIndex(editId);
+      setInitialState(false);
+    },
+    [element]
+  );
+
+  const handleUpdate = useCallback(() => {
+    if (!fieldValue.question) {
+      setYourQuestionError(true);
+      return;
+    }
+
+    let editedForm = [];
+    element.forEach((item) => {
+      if (item.id === editIndex) {
+        editedForm.push({
+          id: editIndex,
+          question: fieldValue.question,
+          field: fieldValue.field,
+          required: fieldValue.required,
+          options: OptionList,
+        });
+      } else {
+        editedForm.push(item);
+      }
+    });
+
+    setElement(editedForm);
+    handleCancel();
+  }, [OptionList, editIndex, element, fieldValue, handleCancel]);
+
+  const handleDelete = useCallback(
+    (deleteId) => {
+      let filteredData = element?.filter((it) => it.id !== deleteId);
+      setElement(filteredData);
+    },
+    [element]
+  );
 
   return (
     <div>
@@ -102,7 +186,18 @@ function CreateForm() {
               onChange={(data) => handleFieldValue(data, "required")}
               value={fieldValue.required}
             />
-            <Button title={"Add"} onClick={handleAdd} />
+            {editIndex || editIndex === 0 ? (
+              <>
+                <Button
+                  customStyles="cancelBtnStyle"
+                  title={"Cancel"}
+                  onClick={handleCancel}
+                />
+                <Button title={"Update"} onClick={handleUpdate} />
+              </>
+            ) : (
+              <Button title={"Add"} onClick={handleAdd} />
+            )}
           </div>
           <div className="optionContainer">
             {(fieldValue.field === "Radio Button" ||
@@ -119,6 +214,8 @@ function CreateForm() {
                       : ""
                   } Options`}
                   value={fieldOptions}
+                  errMsg={optionErr && "Enter dropdown option"}
+                  onBlur={handleBlur}
                 />
                 <Radio.Group value={selectedRadioOptionValue}>
                   {fieldValue.field === "Radio Button" &&
@@ -132,7 +229,7 @@ function CreateForm() {
                       );
                     })}
                 </Radio.Group>
-                {fieldValue.field === "Dropdown" && (
+                {fieldValue.field === "Dropdown" && OptionList.length > 0 && (
                   <Select Options={OptionList} />
                 )}
               </div>
@@ -144,7 +241,13 @@ function CreateForm() {
               <div className="previewSubtitle">
                 Preview - which will seen by applicant
               </div>
-              <DND questions={element}/>
+              <DND
+                questions={element}
+                initialState={initialState}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                handleDnd={setElement}
+              />
             </div>
           )}
         </div>
