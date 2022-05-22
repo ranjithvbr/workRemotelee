@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./field.scss";
 
 function Input({
@@ -10,7 +10,22 @@ function Input({
   placeholder,
   required,
   disabled,
+  onBlur
 }) {
+  const [state, setState] = useState("");
+
+  useEffect(() => {
+    setState(value);
+  }, [value]);
+
+  const handleChange = useCallback(
+    (e) => {
+      setState(e.target.value);
+      onChange(e.target.value);
+    },
+    [onChange]
+  );
+
   return (
     <div className="inputContainer">
       {label && (
@@ -20,8 +35,9 @@ function Input({
       )}
       <input
         name={name}
-        value={value}
-        onChange={onChange}
+        value={state}
+        onChange={handleChange}
+        onBlur={onBlur}
         placeholder={placeholder}
         disabled={disabled}
       />

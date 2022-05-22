@@ -28,7 +28,7 @@
         .jobType {
             margin: 10px 0 10px 20px;
 
-            .checkboxContainer {
+            .checkboxContainer > div {
                 display: flex;
                 white-space: nowrap;
                 flex-wrap: wrap;
@@ -67,19 +67,31 @@
     padding-bottom: 5px;
 }
 
-.otherLocation {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-top: 10px;
-    .inputCheckbox {
-        min-width: 200px;
-        padding: 4px 0;
+.remotelocation .otherLocation {
+    > div:first-child{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: 10px;
+        label {
+            min-width: 200px;
+            padding: 4px 0;
+        }
     }
 }
 
 .application {
     border-bottom: 1px solid $greyBackground;
+    .linkContainer {
+        display: flex;
+        align-items: center;
+        .radioStyles {
+            margin-top: 32px;
+        }
+        .inputContainer {
+            width: 100%;
+        }
+    }
     .or {
     margin-top: 20px;
         span {
@@ -125,5 +137,48 @@
                 margin-left: 20px;
             }
         }
+    }
+}
+
+.jobPostSubmit {
+    text-align: right;
+    button {
+        margin-top: 20px;
+        height: 45px;
+        text-transform: uppercase;
+        padding: 0 40px;
+    }
+}
+
+.checkboxContainer {
+    label{
+        padding-bottom: 4px;
+        min-width: 135px;
+    }
+
+    .ant-checkbox-input~span {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #d7d7d7;
+    }
+
+    .ant-checkbox-checked .ant-checkbox-inner,
+    .ant-checkbox-indeterminate .ant-checkbox-inner {
+        background-color: $primaryText;
+        border-color: $primaryText;
+    }
+
+    .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+    .ant-checkbox:hover .ant-checkbox-inner,
+    .ant-checkbox-input:focus+.ant-checkbox-inner {
+        border-color: $primaryText;
+    }
+
+    .ant-checkbox-checked::after {
+        border-color: $primaryText;
+    }
+
+    .ant-checkbox-inner::after {
+        height: 10.142857px;
     }
 }

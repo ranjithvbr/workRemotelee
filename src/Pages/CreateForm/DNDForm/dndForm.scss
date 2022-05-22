@@ -81,3 +81,21 @@
         color: $errorMsg;
     }
 }
+
+// .cancelBtnStyle {
+//     background-color: $white;
+//     border: 1px solid $primary;
+//     margin-right: 10px;
+//     &:hover {
+//         border-color: $primaryHover;
+//         color: $primaryText;
+//     }
+// }
+
+.modelBtnfooter {
+    text-align: right;
+    margin-top: 10px;
+    button {
+        width: 100px;
+    }
+}

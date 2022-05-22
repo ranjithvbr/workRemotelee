@@ -5,7 +5,7 @@ import "./field.scss";
 function RadioButton({ onChange, value, label, disabled }) {
   return (
     <Radio
-      value={value}
+      checked={value}
       onChange={onChange}
       disabled={disabled}
       className="radioStyles"

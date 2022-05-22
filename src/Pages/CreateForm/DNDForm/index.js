@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import {
-  // Button,
+  Button,
   Input,
   RadioButton,
   Select,
@@ -41,7 +41,15 @@ const getListStyle = (isDraggingOver) => ({
   padding: "10px",
 });
 
-export default function DND({ questions = [], handleEdit, handleDelete, initialState, handleDnd }) {
+export default function DND({
+  questions = [],
+  handleEdit,
+  handleDelete,
+  initialState,
+  handleDnd,
+  handleClear,
+  handleSubmit
+}) {
   const [selectedOptionValue, setSelectedOptionValue] = useState("");
   const [editIndex, setEditIndex] = useState("");
   const [items, setItems] = useState(questions);
@@ -52,11 +60,11 @@ export default function DND({ questions = [], handleEdit, handleDelete, initialS
   }, [questions]);
 
   useEffect(() => {
-    if(initialState) {
+    if (initialState) {
       setEditIndex("");
       setDisableIcon(false);
     }
-  }, [initialState])
+  }, [initialState]);
 
   const onDragEnd = (result) => {
     // dropped outside the list
@@ -157,15 +165,19 @@ export default function DND({ questions = [], handleEdit, handleDelete, initialS
     }
   };
 
-  const handleEditFunc = useCallback((index) => {
-    handleEdit(index);
-    setEditIndex(index);
-    setDisableIcon(true);
-  }, [handleEdit])
+  const handleEditFunc = useCallback(
+    (index) => {
+      handleEdit(index);
+      setEditIndex(index);
+      setDisableIcon(true);
+    },
+    [handleEdit]
+  );
 
   // Normally you would want to split things out into separate components.
   // But in this example everything is just done in one place for simplicity
   return (
+    <div>
     <DragDropContext onDragEnd={onDragEnd} className="dndContainer">
       <Droppable droppableId="droppable">
         {(droppableProvided, droppableSnapshot) => (
@@ -189,12 +201,30 @@ export default function DND({ questions = [], handleEdit, handleDelete, initialS
                       <div className="fieldRowContainer">
                         <div className="actinIconContainer">
                           {handleQuestion(item)}
-                          <EditFilled className={`${disableIcon ? "disableIcon" : "" } iconEdit`} onClick={disableIcon ? () => {} : ()=>handleEditFunc(item.id)} />
-                          <DeleteFilled className={`${disableIcon ? "disableIcon" : "" } iconDelete`} onClick={disableIcon ? () => {} : ()=>handleDelete(item.id)} />
+                          <EditFilled
+                            className={`${
+                              disableIcon ? "disableIcon" : ""
+                            } iconEdit`}
+                            onClick={
+                              disableIcon
+                                ? () => {}
+                                : () => handleEditFunc(item.id)
+                            }
+                          />
+                          <DeleteFilled
+                            className={`${
+                              disableIcon ? "disableIcon" : ""
+                            } iconDelete`}
+                            onClick={
+                              disableIcon
+                                ? () => {}
+                                : () => handleDelete(item.id)
+                            }
+                          />
                         </div>
                         <div className="dragDropIcon">
                           <HolderOutlined
-                            className={disableIcon ? "disableIcon" : "" }
+                            className={disableIcon ? "disableIcon" : ""}
                             {...draggableProvided.dragHandleProps}
                           />
                         </div>
@@ -209,5 +239,10 @@ export default function DND({ questions = [], handleEdit, handleDelete, initialS
         )}
       </Droppable>
     </DragDropContext>
+    <div className="modelBtnfooter">
+      <Button customStyles="cancelBtnStyle" title={"Clear all"} onClick={handleClear} />
+      <Button title={"Submit"} onClick={handleSubmit} />
+    </div>
+    </div>
   );
 }

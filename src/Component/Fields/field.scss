@@ -73,10 +73,6 @@
     .requiredSymbol {
         color: $red;
     }
-
-    .errMsg {
-        position: absolute;
-    }
 }
 
 // Radio
@@ -161,10 +157,6 @@
     .requiredSymbol {
         color: $red;
     }
-
-    .errMsg {
-        position: absolute;
-    }
 }
 
 // Textarea
@@ -202,18 +194,6 @@
 
     .requiredSymbol {
         color: $red;
-    }
-
-    .errMsg {
-        color: $errorMsg;
-        position: absolute;
-        bottom: -23px;
-        display: flex;
-        align-items: center;
-
-        span {
-            margin-right: 5px;
-        }
     }
 }
 
@@ -259,8 +239,16 @@
     .requiredSymbol {
         color: $red;
     }
+}
 
-    .errMsg {
-        position: absolute;
+.errMsg {
+    color: $errorMsg;
+    position: absolute;
+    bottom: -23px;
+    display: flex;
+    align-items: center;
+
+    span {
+        margin-right: 5px;
     }
 }

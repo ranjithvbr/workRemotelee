@@ -107,5 +107,101 @@ const fieldOptionList = [
     }
   ];
 
-  export { fieldOptionList, RequiredOptionList, categoryOptions };
+  const jobType = [
+    {
+      id: "1",
+      label: "Full-time",
+      value: "Full-time"
+    },
+    {
+      id: "2",
+      label: "Contract",
+      value: "Contract"
+    },
+    {
+      id: "3",
+      label: "Part-time",
+      value: "Part-time"
+    },
+    {
+      id: "4",
+      label: "Freelance",
+      value: "Freelance"
+    },
+    {
+      id: "5",
+      label: "Internship",
+      value: "Internship"
+    }
+  ]
+
+  const otherLocation = [
+    {
+      id: "1",
+      label: "America",
+      value: "America"
+    },
+    {
+      id: "2",
+      label: "Europe",
+      value: "Europe"
+    },
+    {
+      id: "3",
+      label: "Germany",
+      value: "Germany"
+    },
+    {
+      id: "4",
+      label: "UK",
+      value: "UK"
+    },
+    {
+      id: "5",
+      label: "Canada",
+      value: "Canada"
+    },
+    {
+      id: "6",
+      label: "France",
+      value: "France"
+    },
+    {
+      id: "7",
+      label: "India",
+      value: "India"
+    },
+    {
+      id: "8",
+      label: "Spain",
+      value: "Spain"
+    },
+    {
+      id: "9",
+      label: "Australia",
+      value: "Australia"
+    },
+    {
+      id: "10",
+      label: "US timezones",
+      value: "US timezones"
+    },
+    {
+      id: "11",
+      label: "European timezones",
+      value: "European timezones"
+    },
+    {
+      id: "12",
+      label: "UK timezones",
+      value: "UK timezones"
+    },
+    {
+      id: "13",
+      label: "Other, please specify: ",
+      value: "Other, please specify: "
+    }
+  ]
+
+  export { fieldOptionList, RequiredOptionList, categoryOptions, jobType, otherLocation };
   

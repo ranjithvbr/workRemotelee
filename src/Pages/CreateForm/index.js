@@ -5,8 +5,13 @@ import { fieldOptionList, RequiredOptionList } from "../../assert/optionList";
 import "./createForm.scss";
 import DND from "./DNDForm";
 
-function CreateForm() {
-  const [visible, setVisible] = useState(true);
+function CreateForm({
+  isModelOpen,
+  handleModelOpen,
+  handleClear,
+  handleSubmit,
+}) {
+  const [visible, setVisible] = useState(false);
   const [element, setElement] = useState([]);
   const [fieldOptions, setFieldOptions] = useState("");
   const [OptionList, setOptionList] = useState([]);
@@ -22,6 +27,10 @@ function CreateForm() {
     required: "",
     options: [],
   });
+
+  useEffect(() => {
+    setVisible(isModelOpen);
+  }, [isModelOpen]);
 
   useEffect(() => {
     let list = [];
@@ -52,8 +61,7 @@ function CreateForm() {
       return;
     }
     if (
-      (fieldValue.field === "Radio Button" &&
-        !selectedRadioOptionValue.length > 0) ||
+      (fieldValue.field === "Radio Button" && !OptionList.length > 0) ||
       (fieldValue.field === "Dropdown" && !OptionList.length > 0)
     ) {
       setOptionErr(true);
@@ -79,21 +87,20 @@ function CreateForm() {
       },
     ]);
     handleCancel();
-  }, [OptionList, element, fieldValue, handleCancel, selectedRadioOptionValue]);
+  }, [OptionList, element, fieldValue, handleCancel]);
 
   const handleBlur = useCallback(() => {
     if (fieldValue.question) {
       setYourQuestionError(false);
     }
     if (
-      (fieldValue.field === "Radio Button" &&
-        selectedRadioOptionValue.length > 0) ||
+      (fieldValue.field === "Radio Button" && OptionList.length > 0) ||
       (fieldValue.field === "Dropdown" && OptionList.length > 0)
     ) {
       setOptionErr(false);
       return;
     }
-  }, [OptionList, fieldValue, selectedRadioOptionValue]);
+  }, [OptionList, fieldValue]);
 
   const handleFieldValue = useCallback((data, name) => {
     setFieldValue((prevState) => ({
@@ -154,15 +161,20 @@ function CreateForm() {
     [element]
   );
 
+  const handleModalClose = useCallback(() => {
+    setVisible(false);
+    handleModelOpen();
+  }, [handleModelOpen]);
+
   return (
     <div>
       <Modal
         title="Create Form"
         visible={visible}
-        onOk={() => setVisible(false)}
-        onCancel={() => setVisible(false)}
+        onCancel={handleModalClose}
         width={700}
         className="createFormModal"
+        footer={null}
       >
         <div className="questionContainer">
           <TextArea
@@ -230,7 +242,7 @@ function CreateForm() {
                     })}
                 </Radio.Group>
                 {fieldValue.field === "Dropdown" && OptionList.length > 0 && (
-                  <Select Options={OptionList} />
+                  <Select Options={OptionList} onChange={() => {}} />
                 )}
               </div>
             )}
@@ -247,6 +259,11 @@ function CreateForm() {
                 handleEdit={handleEdit}
                 handleDelete={handleDelete}
                 handleDnd={setElement}
+                handleClear={() => {
+                  setElement([]);
+                  handleCancel();
+                }}
+                handleSubmit={handleModalClose}
               />
             </div>
           )}
