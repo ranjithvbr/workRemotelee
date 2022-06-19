@@ -6,5 +6,6 @@ import Select from "./Select";
 import TextArea from "./TextArea";
 import FileUpload from "./FileUpload";
 import DatePicker from "./DatePicker";
+import ImgUpload from "./ImgUpload";
 
-export { Button, Checkbox, Input, RadioButton, Select, TextArea, FileUpload, DatePicker };
+export { Button, Checkbox, Input, RadioButton, Select, TextArea, FileUpload, DatePicker, ImgUpload };

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import "./field.scss";
 
 function Input({
@@ -10,7 +11,7 @@ function Input({
   placeholder,
   required,
   disabled,
-  onBlur
+  onBlur,
 }) {
   const [state, setState] = useState("");
 
@@ -41,7 +42,12 @@ function Input({
         placeholder={placeholder}
         disabled={disabled}
       />
-      <span className="errMsg">{errMsg}</span>
+      {errMsg && (
+        <span className="errMsg">
+          <ExclamationCircleFilled />
+          {errMsg}
+        </span>
+      )}
     </div>
   );
 }

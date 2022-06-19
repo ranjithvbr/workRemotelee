@@ -23,22 +23,17 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const getItemStyle = (isDragging, draggableStyle, selectedEditColor) => ({
-  // some basic styles to make the items look a bit nicer
-  padding: "8px",
-
-  // change background colour if dragging
+  padding: "0 8px",
   background: selectedEditColor ? "#d7d7d7" : "white",
   borderRadius: "4px",
   boxShadow: isDragging
     ? "0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%)"
     : "",
-  // styles we need to apply on draggables
   ...draggableStyle,
 });
 
 const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "#f0f0f0" : "",
-  padding: "10px",
 });
 
 export default function DND({
@@ -48,7 +43,8 @@ export default function DND({
   initialState,
   handleDnd,
   handleClear,
-  handleSubmit
+  disableAction,
+  // handleSubmit
 }) {
   const [selectedOptionValue, setSelectedOptionValue] = useState("");
   const [editIndex, setEditIndex] = useState("");
@@ -67,7 +63,6 @@ export default function DND({
   }, [initialState]);
 
   const onDragEnd = (result) => {
-    // dropped outside the list
     if (!result.destination) {
       return;
     }
@@ -174,75 +169,85 @@ export default function DND({
     [handleEdit]
   );
 
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
   return (
     <div>
-    <DragDropContext onDragEnd={onDragEnd} className="dndContainer">
-      <Droppable droppableId="droppable">
-        {(droppableProvided, droppableSnapshot) => (
-          <div
-            ref={droppableProvided.innerRef}
-            style={getListStyle(droppableSnapshot.isDraggingOver)}
-          >
-            {items.map((item, index) => (
-              <Draggable key={item.id} draggableId={item.id} index={index}>
-                {(draggableProvided, draggableSnapshot) => (
-                  <div
-                    ref={disableIcon ? null : draggableProvided.innerRef}
-                    {...draggableProvided.draggableProps}
-                    style={getItemStyle(
-                      draggableSnapshot.isDragging,
-                      draggableProvided.draggableProps.style,
-                      editIndex === item.id
-                    )}
-                  >
-                    <div id={index}>
-                      <div className="fieldRowContainer">
-                        <div className="actinIconContainer">
-                          {handleQuestion(item)}
-                          <EditFilled
-                            className={`${
-                              disableIcon ? "disableIcon" : ""
-                            } iconEdit`}
-                            onClick={
-                              disableIcon
-                                ? () => {}
-                                : () => handleEditFunc(item.id)
-                            }
-                          />
-                          <DeleteFilled
-                            className={`${
-                              disableIcon ? "disableIcon" : ""
-                            } iconDelete`}
-                            onClick={
-                              disableIcon
-                                ? () => {}
-                                : () => handleDelete(item.id)
-                            }
-                          />
-                        </div>
-                        <div className="dragDropIcon">
-                          <HolderOutlined
-                            className={disableIcon ? "disableIcon" : ""}
-                            {...draggableProvided.dragHandleProps}
-                          />
+      <DragDropContext onDragEnd={onDragEnd} className="dndContainer">
+        <Droppable droppableId="droppable">
+          {(droppableProvided, droppableSnapshot) => (
+            <div
+              ref={droppableProvided.innerRef}
+              style={getListStyle(droppableSnapshot.isDraggingOver)}
+            >
+              {items.map((item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(draggableProvided, draggableSnapshot) => (
+                    <div
+                      ref={disableIcon ? null : draggableProvided.innerRef}
+                      {...draggableProvided.draggableProps}
+                      style={getItemStyle(
+                        draggableSnapshot.isDragging,
+                        draggableProvided.draggableProps.style,
+                        editIndex === item.id
+                      )}
+                    >
+                      <div id={index}>
+                        <div className="fieldRowContainer">
+                          <div className="actinIconContainer">
+                            {handleQuestion(item)}
+                            {!disableAction ? (
+                              <>
+                                <EditFilled
+                                  className={`${
+                                    disableIcon ? "disableIcon" : ""
+                                  } iconEdit`}
+                                  onClick={
+                                    disableIcon
+                                      ? () => {}
+                                      : () => handleEditFunc(item.id)
+                                  }
+                                />
+                                <DeleteFilled
+                                  className={`${
+                                    disableIcon ? "disableIcon" : ""
+                                  } iconDelete`}
+                                  onClick={
+                                    disableIcon
+                                      ? () => {}
+                                      : () => handleDelete(item.id)
+                                  }
+                                />
+                              </>
+                            ) : null}
+                          </div>
+                          {!disableAction ? (
+                            <div className="dragDropIcon">
+                              <HolderOutlined
+                                className={disableIcon ? "disableIcon" : ""}
+                                {...draggableProvided.dragHandleProps}
+                              />
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {droppableProvided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-    <div className="modelBtnfooter">
-      <Button customStyles="cancelBtnStyle" title={"Clear all"} onClick={handleClear} />
-      <Button title={"Submit"} onClick={handleSubmit} />
-    </div>
+                  )}
+                </Draggable>
+              ))}
+              {droppableProvided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+      {!disableAction ? (
+        <div className="modelBtnfooter">
+          <Button
+            customStyles="cancelBtnStyle"
+            title={"Clear"}
+            onClick={handleClear}
+          />
+          {/* <Button title={"Submit"} onClick={handleSubmit} /> */}
+        </div>
+      ) : null}
     </div>
   );
 }

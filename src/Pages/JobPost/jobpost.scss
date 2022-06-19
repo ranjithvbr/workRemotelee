@@ -18,17 +18,20 @@
     .categoryRowContainer {
         display: flex;
         width: 100%;
-        > div {
+
+        >div {
             width: 50%;
         }
+
         .inputContainer {
             margin-right: 20px;
         }
 
         .jobType {
             margin: 10px 0 10px 20px;
+            position: relative;
 
-            .checkboxContainer > div {
+            .checkboxContainer>div {
                 display: flex;
                 white-space: nowrap;
                 flex-wrap: wrap;
@@ -44,8 +47,11 @@
         .requiredSymbol {
             color: $red;
         }
-    }
 
+        // ~div {
+        //     display: flex;
+        // }
+    }
 }
 
 .steps {
@@ -55,6 +61,10 @@
     padding-top: 20px;
     font-size: 18px;
     font-weight: bold;
+
+    div {
+        cursor: pointer;
+    }
 
     span {
         margin: 6px 20px 0;
@@ -67,33 +77,43 @@
     padding-bottom: 5px;
 }
 
-.remotelocation .otherLocation {
-    > div:first-child{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin-top: 10px;
-        label {
-            min-width: 200px;
-            padding: 4px 0;
+.remotelocation {
+    position: relative;
+
+    .otherLocation {
+        >div:first-child {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 10px;
+
+            label {
+                min-width: 200px;
+                padding: 4px 0;
+            }
         }
     }
 }
 
 .application {
     border-bottom: 1px solid $greyBackground;
+
     .linkContainer {
         display: flex;
         align-items: center;
+
         .radioStyles {
             margin-top: 32px;
         }
+
         .inputContainer {
             width: 100%;
         }
     }
+
     .or {
-    margin-top: 20px;
+        margin-top: 20px;
+
         span {
             position: absolute;
             left: 50%;
@@ -106,33 +126,55 @@
     }
 }
 
-.applicantBtn {
-    margin-top: 20px;
-    height: 40px;
-    padding: 0 20px;
+.applicant-btn-container {
+    display: flex;
+
+    .applicantBtn {
+        height: 40px;
+        padding: 0 20px;
+        border-radius: 20px;
+    }
+
+    .applicant-template {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+
+        img {
+            width: 20px;
+            margin-left: 7px;
+        }
+    }
 }
 
 .description {
     margin-top: 20px;
+    position: relative;
+
     .trix-button-group--file-tools {
         display: none;
     }
+
     trix-editor {
         min-height: 300px;
         max-height: 600px;
-        overflow-y: scroll;    
+        overflow-y: scroll;
     }
 }
 
 .aboutCompany {
     margin-top: 50px;
+
     .aboutCompanyInputContainer {
         display: flex;
+
         >div {
             width: 50%;
+
             &:first-child {
                 margin-right: 20px;
             }
+
             &:last-child {
                 margin-left: 20px;
             }
@@ -142,6 +184,7 @@
 
 .jobPostSubmit {
     text-align: right;
+
     button {
         margin-top: 20px;
         height: 45px;
@@ -151,7 +194,7 @@
 }
 
 .checkboxContainer {
-    label{
+    label {
         padding-bottom: 4px;
         min-width: 135px;
     }
@@ -159,7 +202,7 @@
     .ant-checkbox-input~span {
         width: 18px;
         height: 18px;
-        border: 2px solid #d7d7d7;
+        border: 2px solid $fieldBorder;
     }
 
     .ant-checkbox-checked .ant-checkbox-inner,
@@ -181,4 +224,19 @@
     .ant-checkbox-inner::after {
         height: 10.142857px;
     }
+}
+
+.createFormContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    .errMsg {
+        left: 27px;
+    }
+}
+
+.d-none {
+    display: none;
 }

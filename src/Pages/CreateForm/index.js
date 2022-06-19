@@ -1,15 +1,24 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Modal, Radio } from "antd";
 import { TextArea, Select, Button, RadioButton } from "../../Component/Fields";
-import { fieldOptionList, RequiredOptionList } from "../../assert/optionList";
-import "./createForm.scss";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import DND from "./DNDForm";
+import Template1 from "../Templates/template1";
+import Template2 from "../Templates/template2";
+import Template3 from "../Templates/template3";
+import {
+  fieldOptionList,
+  RequiredOptionList,
+  templateOptionList,
+} from "../../assert/optionList";
+import "./createForm.scss";
 
 function CreateForm({
   isModelOpen,
-  handleModelOpen,
+  handleModelClose,
   handleClear,
   handleSubmit,
+  handleFormValidation,
 }) {
   const [visible, setVisible] = useState(false);
   const [element, setElement] = useState([]);
@@ -20,6 +29,8 @@ function CreateForm({
   const [optionErr, setOptionErr] = useState(false);
   const [editIndex, setEditIndex] = useState("");
   const [initialState, setInitialState] = useState(true);
+  const [template, setTemplate] = useState("Template 1");
+  const [createFormErr, setCreateFormErr] = useState("");
   const [fieldValue, setFieldValue] = useState({
     id: "",
     question: "",
@@ -31,6 +42,10 @@ function CreateForm({
   useEffect(() => {
     setVisible(isModelOpen);
   }, [isModelOpen]);
+
+  useEffect(() => {
+    handleFormValidation(element);
+  }, [element, handleFormValidation]);
 
   useEffect(() => {
     let list = [];
@@ -163,108 +178,148 @@ function CreateForm({
 
   const handleModalClose = useCallback(() => {
     setVisible(false);
-    handleModelOpen();
-  }, [handleModelOpen]);
+    handleModelClose(null);
+  }, [handleModelClose]);
+
+  const handleOk = useCallback(() => {
+    if (element.length > 0 || template !== "Custom Form") {
+      setVisible(false);
+      handleModelClose(template);
+    } else {
+      setCreateFormErr("Add atleast one field");
+    }
+  }, [element.length, handleModelClose, template]);
+
+  console.log("template", template);
 
   return (
-    <div>
+    <div className="create-form">
       <Modal
         title="Create Form"
         visible={visible}
         onCancel={handleModalClose}
-        width={700}
+        width={800}
         className="createFormModal"
-        footer={null}
+        onOk={handleOk}
+        okText={"Select " + template}
       >
-        <div className="questionContainer">
-          <TextArea
-            label="Your Qusetion"
-            customTextAreaStyles="textAreaFixedHeight"
-            errMsg={yourQuestionError && "Enter your question"}
-            onBlur={handleBlur}
-            onChange={(data) => handleFieldValue(data, "question")}
-            value={fieldValue.question}
-          />
-          <div className="fields">
-            <Select
-              Options={fieldOptionList}
-              label={"Fields"}
-              onChange={(data) => handleFieldValue(data, "field")}
-              value={fieldValue.field}
-            />
-            <Select
-              Options={RequiredOptionList}
-              label={"Field Required"}
-              onChange={(data) => handleFieldValue(data, "required")}
-              value={fieldValue.required}
-            />
-            {editIndex || editIndex === 0 ? (
-              <>
-                <Button
-                  customStyles="cancelBtnStyle"
-                  title={"Cancel"}
-                  onClick={handleCancel}
+        <div className="templateOption">
+          {templateOptionList.map((it) => {
+            return (
+              <RadioButton
+                value={it.value === template}
+                label={it.label}
+                onChange={() => setTemplate(it.value)}
+                helperText={it.helperText}
+              />
+            );
+          })}
+        </div>
+        <div className="horizontal-line">
+          {template === "Template 1" && <Template1 />}
+          {template === "Template 2" && <Template2 />}
+          {template === "Template 3" && <Template3 />}
+          {template === "Custom Form" && (
+            <div className="questionContainer">
+              <TextArea
+                required
+                label="Your Qusetion"
+                customTextAreaStyles="textAreaFixedHeight"
+                errMsg={yourQuestionError && "Enter your question"}
+                onBlur={handleBlur}
+                onChange={(data) => handleFieldValue(data, "question")}
+                value={fieldValue.question}
+              />
+              <div className="fields">
+                <Select
+                  required
+                  Options={fieldOptionList}
+                  label={"Fields"}
+                  onChange={(data) => handleFieldValue(data, "field")}
+                  value={fieldValue.field}
                 />
-                <Button title={"Update"} onClick={handleUpdate} />
-              </>
-            ) : (
-              <Button title={"Add"} onClick={handleAdd} />
-            )}
-          </div>
-          <div className="optionContainer">
-            {(fieldValue.field === "Radio Button" ||
-              fieldValue.field === "Dropdown") && (
-              <div>
-                <TextArea
-                  customTextAreaStyles="fieldOption"
-                  onChange={setFieldOptions}
-                  label={`${
-                    fieldValue.field === "Radio Button"
-                      ? "Radio"
-                      : fieldValue.field === "Dropdown"
-                      ? "Dropdown"
-                      : ""
-                  } Options`}
-                  value={fieldOptions}
-                  errMsg={optionErr && "Enter dropdown option"}
-                  onBlur={handleBlur}
+                <Select
+                  required
+                  Options={RequiredOptionList}
+                  label={"Field Required"}
+                  onChange={(data) => handleFieldValue(data, "required")}
+                  value={fieldValue.required}
                 />
-                <Radio.Group value={selectedRadioOptionValue}>
-                  {fieldValue.field === "Radio Button" &&
-                    OptionList.map((data) => {
-                      return (
-                        <RadioButton
-                          onChange={() => setSelectedRadioOptionValue(data?.li)}
-                          value={data?.li}
-                          label={data.li}
-                        />
-                      );
-                    })}
-                </Radio.Group>
-                {fieldValue.field === "Dropdown" && OptionList.length > 0 && (
-                  <Select Options={OptionList} onChange={() => {}} />
+                {editIndex || editIndex === 0 ? (
+                  <>
+                    <Button
+                      customStyles="cancelBtnStyle"
+                      title={"Cancel"}
+                      onClick={handleCancel}
+                    />
+                    <Button title={"Update"} onClick={handleUpdate} />
+                  </>
+                ) : (
+                  <Button title={"Add"} onClick={handleAdd} />
                 )}
               </div>
-            )}
-          </div>
-
-          {element.length > 0 && (
-            <div className="customForm">
-              <div className="previewSubtitle">
-                Preview - which will seen by applicant
+              <div className="optionContainer">
+                {(fieldValue.field === "Radio Button" ||
+                  fieldValue.field === "Dropdown") && (
+                  <div>
+                    <TextArea
+                      customTextAreaStyles="fieldOption"
+                      onChange={setFieldOptions}
+                      label={`${
+                        fieldValue.field === "Radio Button"
+                          ? "Radio"
+                          : fieldValue.field === "Dropdown"
+                          ? "Dropdown"
+                          : ""
+                      } Options`}
+                      value={fieldOptions}
+                      errMsg={optionErr && "Enter dropdown option"}
+                      onBlur={handleBlur}
+                    />
+                    <Radio.Group value={selectedRadioOptionValue}>
+                      {fieldValue.field === "Radio Button" &&
+                        OptionList.map((data) => {
+                          return (
+                            <RadioButton
+                              onChange={() =>
+                                setSelectedRadioOptionValue(data?.li)
+                              }
+                              value={data?.li}
+                              label={data.li}
+                            />
+                          );
+                        })}
+                    </Radio.Group>
+                    {fieldValue.field === "Dropdown" &&
+                      OptionList.length > 0 && (
+                        <Select Options={OptionList} onChange={() => {}} />
+                      )}
+                  </div>
+                )}
               </div>
-              <DND
-                questions={element}
-                initialState={initialState}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                handleDnd={setElement}
-                handleClear={() => {
-                  setElement([]);
-                  handleCancel();
-                }}
-                handleSubmit={handleModalClose}
-              />
+              {createFormErr && element.length === 0 && (
+                <span className="create-form-err-msg">
+                  <ExclamationCircleFilled />
+                  {createFormErr}
+                </span>
+              )}
+              {element.length > 0 && (
+                <div className="customForm">
+                  <div className="previewSubtitle">Preview</div>
+                  <DND
+                    questions={element}
+                    initialState={initialState}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                    handleDnd={setElement}
+                    handleClear={() => {
+                      setElement([]);
+                      handleCancel();
+                    }}
+                    // handleSubmit={handleModalClose}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>

@@ -2,14 +2,14 @@
 
 // Button
 .buttonContainer {
-    height: 32px;
     background-color: $primary;
     border-style: none;
     color: $black;
-    border-radius: 2px;
     cursor: pointer;
     font-weight: 600;
-
+    border-radius: 20px;
+    height: 40px;
+    padding: 0 20px;
     &:hover {
         background-color: $primaryHover;
     }
@@ -23,7 +23,7 @@
     .ant-checkbox-input~span {
         width: 18px;
         height: 18px;
-        border: 2px solid #d7d7d7;
+        border: 2px solid $fieldBorder;
     }
 
     .ant-checkbox-checked .ant-checkbox-inner,
@@ -60,8 +60,8 @@
 
     input {
         height: 40px;
-        border: 2px solid #d7d7d7;
-        background-color: #f0f0f0;
+        border: 2px solid $fieldBorder;
+        background-color: $fieldBackground;
         border-radius: 4px;
         padding: 0 10px;
 
@@ -84,7 +84,7 @@
     .ant-radio-inner {
         width: 20px;
         height: 20px;
-        border: 2px solid #d7d7d7;
+        border: 2px solid $fieldBorder;
 
         &::after {
             width: 18px;
@@ -114,6 +114,12 @@
     }
 }
 
+.radioHelperText {
+    font-size: 12px;
+    margin-left: 28px;
+    color: grey;
+}
+
 // Select
 .selectContainer {
     margin: 10px 0;
@@ -127,8 +133,8 @@
 
     select {
         height: 40px;
-        border: 2px solid #d7d7d7;
-        background-color: #f0f0f0;
+        border: 2px solid $fieldBorder;
+        background-color: $fieldBackground;
         border-radius: 4px;
         padding: 0 10px;
 
@@ -172,8 +178,8 @@
 
     textarea {
         resize: none;
-        border: 2px solid #d7d7d7;
-        background-color: #f0f0f0;
+        border: 2px solid $fieldBorder;
+        background-color: $fieldBackground;
         border-radius: 4px;
         padding: 0 10px;
 
@@ -198,14 +204,53 @@
 }
 
 // Upload
-.dropzoneContainer {
-    border: 2px dashed #d7d7d7;
-    background-color: #f0f0f0;
+.dropzone-block {
+    margin: 10px 0;
+    display: grid;
+    position: relative;
+    
+    label {
+        font-weight: 600;
+        padding: 10px 0 4px 0;
+    }
+    .requiredSymbol {
+        color: $red;
+    }
+    .dropzoneContainer {
+        border: 2px dashed $fieldBorder;
+        background-color: $fieldBackground;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+        cursor: pointer;
+        p {
+            margin: 0;
+        }
+    }
+}
+
+.dropzoneImgContainer {
+    border: 2px dashed $fieldBorder;
+    background-color: $fieldBackground;
     border-radius: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80px;
+    height: 120px;
+    cursor: pointer;
+    .dropzone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 120px;
+    }
+    .previewImg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     p {
         margin: 0;
@@ -226,8 +271,8 @@
 
     .ant-picker {
         height: 40px;
-        border: 2px solid #d7d7d7;
-        background-color: #f0f0f0;
+        border: 2px solid $fieldBorder;
+        background-color: $fieldBackground;
         border-radius: 4px;
         padding: 0 10px;
 

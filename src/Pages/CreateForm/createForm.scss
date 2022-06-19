@@ -1,12 +1,24 @@
 @import "../../assert/colors.scss";
 
+.ant-modal-wrap {
+    overflow-y: hidden !important;
+}
+
 .createFormModal {
+    top: 30px !important;
     .ant-modal-content .ant-modal-body {
-        padding-top: 0;
+        padding: 0 24px;
+        height: calc(100vh - 12rem);
     }
 }
 
 .questionContainer {
+    overflow-y: scroll;
+    height: calc(100vh - 16.2rem);
+    padding: 0 20px 10px;
+    .textAreaContainer {
+        margin: 0;
+    }
     .fields {
         display: flex;
         align-items: flex-end;
@@ -25,7 +37,7 @@
 
         button {
             width: 20%;
-            height: 38px;
+            // height: 38px;
             margin-bottom: 10px;
             position: relative;
             bottom: 2px;
@@ -34,14 +46,14 @@
 
     .textAreaFixedHeight {
         textarea {
-            height: 100px;
+            height: 70px;
         }
     }
 
     .customForm {
-        margin-top: 20px;
-        border-top: 1px solid #e8e8e8;
-        padding-top: 20px;
+        margin-top: 10px;
+        border-top: 1px solid $fieldBackground;
+        padding-top: 10px;
 
         .inputContainer label {
             padding: 0;
@@ -74,11 +86,36 @@
 
     .cancelBtnStyle {
         background-color: $white;
-        border: 1px solid $primary;
+        border: 2px solid $primary;
         margin-right: 10px;
+        height: 36px;
+        transition: 0.3s;
         &:hover {
             border-color: $primaryHover;
             color: $primaryText;
         }
+    }
+}
+
+.templateOption {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    label {
+        margin-right: 30px;
+    }
+}
+
+.horizontal-line {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid $greyBackground;
+}
+
+.create-form-err-msg {
+    color: $errorMsg;
+
+    span {
+        margin-right: 5px;
     }
 }

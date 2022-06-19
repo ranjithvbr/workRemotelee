@@ -16,7 +16,7 @@ i18n
         translations: {
           "welcome": "Willkommen bei React und react-i18next",
         },
-      },
+      }
     },
     fallbackLng: "en",
     debug: true,
